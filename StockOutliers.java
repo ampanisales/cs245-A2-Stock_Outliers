@@ -24,7 +24,7 @@ public class StockOutliers {
 			endCal.setTime(startDate);
 			endCal.add(Calendar.YEAR, 1);
 			Date endDate = endCal.getTime();
-			String filename = symbol + ".csv";	
+			String filename = symbol + ".csv";
 			Scanner filescan = new Scanner(new File(filename));
 			//LinkedList outliers = new LinkedList();
 			ArrayList<StockData> outliers = new ArrayList<StockData>();
