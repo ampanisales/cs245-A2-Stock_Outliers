@@ -6,10 +6,15 @@ public class StockData {
 	private String high;
 	private String low;
 	private String close;
+	private String adjClose;
 	private String volume;
+	private boolean inRange;
+	private int dayInRange;
 	
 	//Constructor
-	public StockData() {}
+	public StockData() {
+		inRange = false;
+	}
 	
 	public String getDate() {
 		return date;
@@ -31,8 +36,20 @@ public class StockData {
 		return close;
 	}
 	
+	public String getAdjClose() {
+		return adjClose;
+	}
+	
 	public String getVolume() {
 		return volume;
+	}
+	
+	public boolean getInRange() {
+		return inRange;
+	}
+	
+	public int getDayInRange() {
+		return dayInRange;
 	}
 	
 	public void setDate(String newDate) {
@@ -55,8 +72,20 @@ public class StockData {
 		close = newClose;
 	}
 	
+	public void setAdjClose(String newAdjClose) {
+		adjClose = newAdjClose;
+	}
+	
 	public void setVolume(String newVolume) {
 		volume = newVolume;
+	}
+	
+	public void setInRange(boolean newInRange) {
+		inRange = newInRange;
+	}
+	
+	public void setDayInRange(int newDayInRange) {
+		dayInRange = newDayInRange;
 	}
 	
 }
