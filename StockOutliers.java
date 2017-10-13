@@ -32,7 +32,6 @@ public class StockOutliers {
 				endCal.add(Calendar.YEAR, 1);
 				Date endDate = endCal.getTime();
 				LinkedList allRecords = new LinkedList();
-				//ArrayList<StockData> allRecords = new ArrayList<StockData>(); //TEST
 				
 				filescan.nextLine(); //Makes sure first line isn't used
 				filescan.useDelimiter(Pattern.compile(",|;"));
@@ -97,13 +96,6 @@ public class StockOutliers {
 						System.out.println(outlier.getDate() + ": " + closeFormat.format(adjClose));
 					}
 					break;
-					
-		//				//TEST PRINT
-		//				for (int i = 0; i < allRecords.size(); i++) {
-		//					if (i % 3 == 0) {
-		//						System.out.println(allRecords.get(i).getDate() + ": " + allRecords.get(i).getAdjClose());
-		//					}
-		//				}
 				}
 			} catch (FileNotFoundException e) {
 				System.out.println("File of this stock not found");
