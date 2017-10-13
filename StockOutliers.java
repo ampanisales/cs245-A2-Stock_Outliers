@@ -1,9 +1,12 @@
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class StockOutliers {
 	
@@ -12,61 +15,108 @@ public class StockOutliers {
 		Scanner scan = new Scanner(System.in);
 		
 		//DO INPUT VALIDATION
-		try {
-			System.out.print("Stock Symbol: ");
-			String symbol = scan.next();
-			//Check if startDate is in right format?
-			System.out.print("Starting Date: ");
-			String date = scan.next();
-			String format = "yyyy-MM-dd";
-			Date startDate = new SimpleDateFormat(format).parse(date);
-			Calendar endCal = Calendar.getInstance();
-			endCal.setTime(startDate);
-			endCal.add(Calendar.YEAR, 1);
-			Date endDate = endCal.getTime();
-			String filename = symbol + ".csv";
-			Scanner filescan = new Scanner(new File(filename));
-			//LinkedList outliers = new LinkedList();
-			ArrayList<StockData> outliers = new ArrayList<StockData>();
-			filescan.useDelimiter(",|\\n");
-			while (filescan.hasNextLine()) {
-				StockData data = new StockData();
-				data.setDate(scan.next());
-				Date recordDate = new SimpleDateFormat(format).parse(data.getDate());
-				//Checks if date of record is before the end date
-				if (recordDate.before(endDate)) {
-					data.setOpen(scan.next());
-					data.setHigh(scan.next());
-					data.setLow(scan.next());
-					data.setClose(scan.next());
-					data.setVolume(scan.next());
-//					if (Closing price is an outlier) {
-//						outliers.add(data);
-//					}
-					outliers.add(data);
-				}
-			}
-			filescan.close();
-			
-			//Prints linked list of outliers
-			if (outliers.size() < 2) {
-				System.out.println("There is insufficient data for this period.");
-			} else {
-//				LinkedList.ListIterator it = outliers.iterator();
-//				while (it.hasNext()) {
-//					StockData outlier = (StockData) it.next();
-//					System.out.println(outlier.getDate() + ": " + outlier.getClose());
-//				}
-				for (int i = 0; i < outliers.size(); i++) {
-					if (i % 3 == 0) {
-						System.out.println(outliers.get(i).getDate() + ": " + outliers.get(i).getClose());
+		boolean fileExists = false;
+		while (!fileExists) {
+			try {
+				System.out.print("Stock Symbol: ");
+				String symbol = scan.next();
+				String filename = symbol + ".csv";
+				Scanner filescan = new Scanner(new File(filename));
+				//Check if startDate is in right format? Check if startDate is a valid date?
+				System.out.print("Starting Date (Use year-month-day format): ");
+				String date = scan.next();
+				String format = "yyyy-MM-dd";
+				Date startDate = new SimpleDateFormat(format).parse(date);
+				Calendar endCal = Calendar.getInstance();
+				endCal.setTime(startDate);
+				endCal.add(Calendar.YEAR, 1);
+				Date endDate = endCal.getTime();
+				LinkedList allRecords = new LinkedList();
+				//ArrayList<StockData> allRecords = new ArrayList<StockData>(); //TEST
+				
+				filescan.nextLine(); //Makes sure first line isn't used
+				filescan.useDelimiter(Pattern.compile(",|;"));
+				
+				int recordsInRange = 0;
+				double sumAdjClose = 0;
+				double sumXY = 0;
+				int sumXsquared = 0;
+				
+				while (filescan.hasNextLine()) {
+					StockData data = new StockData();
+					String tempDate = filescan.next().replace("\n", "").replace("\r", "");
+					if (tempDate.equals("")) { //For last line in file
+						break;
+					} else {
+						data.setDate(tempDate);
+					}
+					Date recordDate = new SimpleDateFormat(format).parse(data.getDate());
+					data.setOpen(filescan.next());
+					data.setHigh(filescan.next());
+					data.setLow(filescan.next());
+					data.setClose(filescan.next());
+					data.setAdjClose(filescan.next());
+					data.setVolume(filescan.next());
+					allRecords.add(data);
+					//If record is within the range
+					if ((recordDate.equals(startDate) || recordDate.after(startDate))
+							&& recordDate.before(endDate)) {
+						recordsInRange++; //This is n
+						data.setInRange(true);
+						data.setDayInRange(recordsInRange);
+						sumXY += recordsInRange*Double.parseDouble(data.getAdjClose());
+						sumXsquared += recordsInRange*recordsInRange;
+						sumAdjClose += Double.parseDouble(data.getAdjClose()); 
 					}
 				}
+				filescan.close();
+				
+				if (recordsInRange < 2) {
+					System.out.println("There is insufficient data for this period.");
+				} else {
+					//Make outliers linked List
+					LinkedList outliers = new LinkedList();
+					OutlierDetector detector = new OutlierDetector(recordsInRange, sumAdjClose,
+							recordsInRange, sumXY, sumXsquared);
+					LinkedList.ListIterator it = allRecords.iterator();
+					while (it.hasNext()) {
+						StockData record = (StockData) it.next();
+						Double adjClose = Double.parseDouble(record.getAdjClose()); 
+						if (record.getInRange()  && detector.isOutlier(record.getDayInRange(), adjClose)) {
+							outliers.add(record);
+						}
+					}
+					
+					//Prints linked list of outliers
+					System.out.println("Outliers from " + startDate + " to " + endDate);
+					it = outliers.iterator();
+					DecimalFormat closeFormat = new DecimalFormat(".##");
+					while (it.hasNext()) {
+						StockData outlier = (StockData) it.next();
+						Double adjClose = Double.parseDouble(outlier.getAdjClose()); 
+						System.out.println(outlier.getDate() + ": " + closeFormat.format(adjClose));
+					}
+					break;
+					
+		//				//TEST PRINT
+		//				for (int i = 0; i < allRecords.size(); i++) {
+		//					if (i % 3 == 0) {
+		//						System.out.println(allRecords.get(i).getDate() + ": " + allRecords.get(i).getAdjClose());
+		//					}
+		//				}
+				}
+			} catch (FileNotFoundException e) {
+				System.out.println("File of this stock not found");
+				continue;
+			} catch (ParseException e) {
+				System.out.println("Invalid date");
+				continue;
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println(e);
+				continue;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println(e);
+			scan.close();
 		}
-		scan.close();
 	}
 }
