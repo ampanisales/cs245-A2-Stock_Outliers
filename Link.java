@@ -9,11 +9,6 @@ public class Link {
 		next = null;
 	}
 	
-	public Link(Object newData, Link newNext) {
-		data = newData;
-		next = newNext;
-	}
-	
 	public Object getData() {
 		return data;
 	}
