@@ -3,7 +3,7 @@ public class LinkedList {
 	
 	Link dummyHead;
 	Link head;
-	int size = 0;
+	int size;
 	
 	//Is doing this ok?
 	public class ListIterator {
@@ -31,6 +31,7 @@ public class LinkedList {
 	public LinkedList() {
 		head = new Link(null);
 		dummyHead = head;
+		size = 0;
 	}
 	
 	//Add to end of list
