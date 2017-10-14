@@ -25,6 +25,7 @@ public class StockOutliers {
 				//Check if startDate is in right format? Check if startDate is a valid date?
 				System.out.print("Starting Date (Use year-month-day format): ");
 				String date = scan.next();
+				scan.close();
 				String format = "yyyy-MM-dd";
 				Date startDate = new SimpleDateFormat(format).parse(date);
 				Calendar endCal = Calendar.getInstance();
@@ -125,7 +126,6 @@ public class StockOutliers {
 				System.out.println(e);
 				continue;
 			}
-			scan.close();
 		}
 	}
 }
