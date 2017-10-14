@@ -60,7 +60,7 @@ public class StockOutliers {
 					//If record is within the range
 					if ((recordDate.equals(startDate) || recordDate.after(startDate))
 							&& recordDate.before(endDate)) {
-						recordsInRange++; //This is n
+						recordsInRange++; //This is n and sumX
 						data.setInRange(true);
 						data.setDayInRange(recordsInRange);
 						sumXY += recordsInRange*Double.parseDouble(data.getAdjClose());
@@ -78,16 +78,33 @@ public class StockOutliers {
 					OutlierDetector detector = new OutlierDetector(recordsInRange, sumAdjClose,
 							recordsInRange, sumXY, sumXsquared);
 					LinkedList.ListIterator it = allRecords.iterator();
+					double mean = sumAdjClose/recordsInRange;
+					double sumCloseMinusMean = 0;
+					//double variance = sum[(price - mean)^2]/n
+
+					//To help calculate the variance
 					while (it.hasNext()) {
 						StockData record = (StockData) it.next();
 						Double adjClose = Double.parseDouble(record.getAdjClose()); 
-						if (record.getInRange()  && detector.isOutlier(record.getDayInRange(), adjClose)) {
+						if (record.getInRange()) {
+							sumCloseMinusMean += Math.pow(adjClose-mean, 2);
+						}
+					}
+
+					//Fill outliers linked list
+					double variance = detector.calculateVariance(sumCloseMinusMean);
+					it = allRecords.iterator();
+					while (it.hasNext()) {
+						StockData record = (StockData) it.next();
+						Double adjClose = Double.parseDouble(record.getAdjClose()); 
+						if (record.getInRange() && detector.isOutlier(record.getDayInRange(), adjClose, variance)) {
 							outliers.add(record);
 						}
 					}
 					
 					//Prints linked list of outliers
-					System.out.println("Outliers from " + startDate + " to " + endDate);
+					System.out.println("Outliers from " + new SimpleDateFormat(format).format(startDate) + 
+										" to " + new SimpleDateFormat(format).format(endDate) + ":");
 					it = outliers.iterator();
 					DecimalFormat closeFormat = new DecimalFormat(".##");
 					while (it.hasNext()) {
