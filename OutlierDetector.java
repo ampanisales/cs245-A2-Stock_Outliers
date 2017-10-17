@@ -31,18 +31,25 @@ public class OutlierDetector {
 
 	//EMAIL PROFESSOR ABOUT VARIANCE FORMULA
 	public double calculateVariance(double sumPriceMinusMean) { 
-		return sumPriceMinusMean/n;
+		return sumPriceMinusMean/(n-1);
 	}
 	
-	public boolean isOutlier(int day, double adjClose, double variance) {
+	public boolean isOutlier(int day, double adjClose, double mean, double variance) {
 		double a = calculateA();
 		double b = calculateB();
 		int x = day;
 		double y = adjClose;
+		double stdev = Math.sqrt(variance);
+		double lowerLimit = mean - stdev;
+		double upperLimit = mean + stdev;
+		//System.out.println("a+b*x: " + (a+b*x) + " y: " + y + " variance: " + variance);
 		//ASK WHAT IS THE CRITERIA FOR AN OUTLIER
-		if ((a+b*x) - y > variance) {
+		if (Math.abs((a+b*x) - y) > Math.abs((a+b*x) - variance)) {
 			return true;
-		} else {
+		}
+		/*if (lowerLimit > y || upperLimit < y) {
+			return true;
+		}*/ else {
 			return false;
 		}
 	}
