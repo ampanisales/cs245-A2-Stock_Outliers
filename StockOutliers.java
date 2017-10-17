@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,7 +12,7 @@ import java.io.FileNotFoundException;
 public class StockOutliers {
 	
 	public static void main(String args[]) {
-		
+
 		Scanner scan = new Scanner(System.in);
 		
 		//DO INPUT VALIDATION
@@ -25,7 +26,6 @@ public class StockOutliers {
 				//Check if startDate is in right format? Check if startDate is a valid date?
 				System.out.print("Starting Date (Use year-month-day format): ");
 				String date = scan.next();
-				scan.close();
 				String format = "yyyy-MM-dd";
 				Date startDate = new SimpleDateFormat(format).parse(date);
 				Calendar endCal = Calendar.getInstance();
@@ -33,11 +33,12 @@ public class StockOutliers {
 				endCal.add(Calendar.YEAR, 1);
 				Date endDate = endCal.getTime();
 				LinkedList allRecords = new LinkedList();
-				
 				filescan.nextLine(); //Makes sure first line isn't used
 				filescan.useDelimiter(Pattern.compile(",|;"));
 				
+				//Needed for linear regression
 				int recordsInRange = 0;
+				int sumX = 0;
 				double sumAdjClose = 0;
 				double sumXY = 0;
 				int sumXsquared = 0;
@@ -61,11 +62,17 @@ public class StockOutliers {
 					//If record is within the range
 					if ((recordDate.equals(startDate) || recordDate.after(startDate))
 							&& recordDate.before(endDate)) {
-						recordsInRange++; //This is n and sumX
+						recordsInRange++; //This is n
 						data.setInRange(true);
-						data.setDayInRange(recordsInRange);
-						sumXY += recordsInRange*Double.parseDouble(data.getAdjClose());
-						sumXsquared += recordsInRange*recordsInRange;
+
+						//Gets the number of days since the start date
+						long difference = recordDate.getTime() - startDate.getTime();
+						int daysSinceStart = (int) TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
+
+						data.setDaysSinceStart(daysSinceStart);
+						sumX += daysSinceStart;
+						sumXY += daysSinceStart*Double.parseDouble(data.getAdjClose());
+						sumXsquared += daysSinceStart*daysSinceStart;
 						sumAdjClose += Double.parseDouble(data.getAdjClose()); 
 					}
 				}
@@ -73,10 +80,11 @@ public class StockOutliers {
 				
 				if (recordsInRange < 2) {
 					System.out.println("There is insufficient data for this period.");
+					continue;
 				} else {
 					//Make outliers linked List
 					LinkedList outliers = new LinkedList();
-					OutlierDetector detector = new OutlierDetector(recordsInRange, sumAdjClose,
+					OutlierDetector detector = new OutlierDetector(sumX, sumAdjClose,
 							recordsInRange, sumXY, sumXsquared);
 					LinkedList.ListIterator it = allRecords.iterator();
 					double mean = sumAdjClose/recordsInRange;
@@ -98,7 +106,8 @@ public class StockOutliers {
 					while (it.hasNext()) {
 						StockData record = (StockData) it.next();
 						Double adjClose = Double.parseDouble(record.getAdjClose()); 
-						if (record.getInRange() && detector.isOutlier(record.getDayInRange(), adjClose, variance)) {
+						if (record.getInRange() && detector.isOutlier(record.getDaysSinceStart(), 
+							adjClose, mean, variance)) {
 							outliers.add(record);
 						}
 					}
@@ -124,8 +133,9 @@ public class StockOutliers {
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println(e);
-				continue;
+				break;
 			}
 		}
+		scan.close();
 	}
 }
