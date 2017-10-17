@@ -29,6 +29,7 @@ public class LinkedList {
 	}
 	
 	public LinkedList() {
+		//Makes dummy head
 		head = new Link(null);
 		dummyHead = head;
 		size = 0;
@@ -91,6 +92,7 @@ public class LinkedList {
 		7. Return data*/
 		
 		if (pos < 0 || pos > size) {
+			//Should we actually do something for this?
 			throw new Exception();
 		} else {
 			if (pos == 0) {
@@ -101,6 +103,7 @@ public class LinkedList {
 				int counter = 0;
 				while (counter < pos-1) {
 					currLink = currLink.getNext();
+					counter++;
 				}
 				currLink.setNext(currLink.getNext().getNext());
 			}
