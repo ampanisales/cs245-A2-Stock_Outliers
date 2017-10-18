@@ -1,7 +1,6 @@
 
 public class LinkedList {
-	
-	Link dummyHead;
+
 	Link head;
 	int size;
 	
@@ -11,7 +10,9 @@ public class LinkedList {
 		private Link link;
 		
 		public ListIterator() {
-			link = dummyHead;
+			//Makes dummy head
+			link = new Link(null);
+			link.setNext(head);
 		}
 		
 		public boolean hasNext() {
@@ -29,18 +30,14 @@ public class LinkedList {
 	}
 	
 	public LinkedList() {
-		//Makes dummy head
-		head = new Link(null);
-		dummyHead = head;
 		size = 0;
 	}
 	
 	//Add to end of list
 	public void add(Object data) {
 		Link currLink = head;
-		if (currLink.getData() == null) {
+		if (currLink == null) {
 			head = new Link(data);
-			dummyHead.setNext(head);
 		} else {
 			while (currLink.getNext() != null) {
 				currLink = currLink.getNext();
@@ -64,7 +61,6 @@ public class LinkedList {
 		} else {
 			Link newLink = new Link(data);
 			if (pos == 0) { //Replace head;
-				dummyHead.setNext(newLink);
 				newLink.setNext(head);
 				head = newLink;
 			} else {
@@ -97,7 +93,6 @@ public class LinkedList {
 		} else {
 			if (pos == 0) {
 				head = head.getNext();
-				dummyHead.setNext(head);
 			} else {
 				Link currLink = head;
 				int counter = 0;
