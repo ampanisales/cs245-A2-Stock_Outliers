@@ -4,7 +4,6 @@ public class LinkedList {
 	Link head;
 	int size;
 	
-	//Is doing this ok?
 	public class ListIterator {
 
 		private Link link;
@@ -88,7 +87,6 @@ public class LinkedList {
 		7. Return data*/
 		
 		if (pos < 0 || pos > size) {
-			//Should we actually do something for this?
 			throw new Exception();
 		} else {
 			if (pos == 0) {
