@@ -15,7 +15,6 @@ public class StockOutliers {
 
 		Scanner scan = new Scanner(System.in);
 		
-		//DO INPUT VALIDATION
 		boolean fileExists = false;
 		while (!fileExists) {
 			try {
@@ -23,7 +22,6 @@ public class StockOutliers {
 				String symbol = scan.next();
 				String filename = symbol + ".csv";
 				Scanner filescan = new Scanner(new File(filename));
-				//Check if startDate is in right format? Check if startDate is a valid date?
 				System.out.print("Starting Date (Use year-month-day format): ");
 				String date = scan.next();
 				String format = "yyyy-MM-dd";
@@ -79,7 +77,7 @@ public class StockOutliers {
 				filescan.close();
 				
 				if (recordsInRange < 2) {
-					System.out.println("There is insufficient data for this period.");
+					System.out.println("There is insufficient data for this period." + "\n");
 					continue;
 				} else {
 					//Make outliers linked List
@@ -89,7 +87,6 @@ public class StockOutliers {
 					LinkedList.ListIterator it = allRecords.iterator();
 					double mean = sumAdjClose/recordsInRange;
 					double sumCloseMinusMean = 0;
-					//double variance = sum[(price - mean)^2]/n
 
 					//To help calculate the variance
 					while (it.hasNext()) {
@@ -125,10 +122,10 @@ public class StockOutliers {
 					break;
 				}
 			} catch (FileNotFoundException e) {
-				System.out.println("File of this stock not found");
+				System.out.println("File of this stock not found" + "\n");
 				continue;
 			} catch (ParseException e) {
-				System.out.println("Invalid date");
+				System.out.println("Invalid date" + "\n");
 				continue;
 			} catch (Exception e) {
 				e.printStackTrace();
