@@ -9,7 +9,6 @@ public class StockData {
 	private String adjClose;
 	private String volume;
 	private boolean inRange;
-	private int daysSinceStart;
 	
 	//Constructor
 	public StockData() {
@@ -48,10 +47,6 @@ public class StockData {
 		return inRange;
 	}
 	
-	public int getDaysSinceStart() {
-		return daysSinceStart;
-	}
-	
 	public void setDate(String newDate) {
 		date = newDate;
 	}
@@ -82,10 +77,6 @@ public class StockData {
 	
 	public void setInRange(boolean newInRange) {
 		inRange = newInRange;
-	}
-	
-	public void setDaysSinceStart(int newDaysSinceStart) {
-		daysSinceStart = newDaysSinceStart;
 	}
 	
 }
