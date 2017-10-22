@@ -1,1 +1,1 @@
-# cs245-A2-Stock_Outliers
+StockOutliers.java has the main function and is the program that's supposed to be run.
