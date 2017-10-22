@@ -1,0 +1,15 @@
+I did opportunity 2, which involves creating a program with better outlier detection. I used the mean and standard deviation method
+to find outliers; however, instead of having the outliers be values that are past 3 standard deviations from the mean, which is the
+default for this method, I had the outliers be values that are past 2 standard deviations. In order to find the mean, I added up all
+of the closing stock prices that were found in the records that were in the proper date range and then divided that sum by the number 
+of records that were in range. In order to find the standard deviation, I had to first find the variance, becuase the standard deviation
+is the square root of the variance. There is a method in OutlierDetector.java that calculates the variance, and the numbers needed for
+that method are found when a new OutlierDetector object is created. The specific numbers I needed were the sum of the squares of the 
+difference of the closing stock prices and the mean, and the number of records in range. Because this program deals with samples of data,
+the formula found in the variance forumula uses n-1, instead of just n.
+
+Infomation about the mean and standard deviation method:
+https://docs.oracle.com/cd/E17236_01/epm.1112/cb_statistical/frameset.htm?ch07s02s10s01.html
+
+Information about the variance:
+http://www.mathsisfun.com/data/standard-deviation.html
