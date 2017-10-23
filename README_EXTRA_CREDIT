@@ -6,7 +6,7 @@ of records that were in range. In order to find the standard deviation, I had to
 is the square root of the variance. There is a method in OutlierDetector.java that calculates the variance, and the numbers needed for
 that method are found when a new OutlierDetector object is created. The specific numbers I needed were the sum of the squares of the 
 difference of the closing stock prices and the mean, and the number of records in range. Because this program deals with samples of data,
-the formula found in the variance forumula uses n-1, instead of just n.
+the formula found in the variance method uses n-1, instead of just n.
 
 Infomation about the mean and standard deviation method:
 https://docs.oracle.com/cd/E17236_01/epm.1112/cb_statistical/frameset.htm?ch07s02s10s01.html
