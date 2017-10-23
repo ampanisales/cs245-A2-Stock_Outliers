@@ -16,12 +16,11 @@ public class OutlierDetector {
 	}
 	
 	public boolean isOutlier(double adjClose) {
-		double y = adjClose;
 		double variance = calculateVariance();
 		double stdev = Math.sqrt(variance);
 		double lowerLimit = mean - 2*stdev;
 		double upperLimit = mean + 2*stdev;
-		if (lowerLimit > y || upperLimit < y) {
+		if (lowerLimit > adjClose || upperLimit < adjClose) {
 			return true;
 		} else {
 			return false;
