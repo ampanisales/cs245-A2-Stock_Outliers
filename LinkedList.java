@@ -3,6 +3,34 @@ public class LinkedList {
 
 	Link head;
 	int size;
+
+	class Link {
+
+		Object data;
+		Link next;
+		
+		public Link(Object newData) {
+			data = newData;
+			next = null;
+		}
+		
+		public Object getData() {
+			return data;
+		}
+		
+		public Link getNext() {
+			return next;
+		}
+		
+		public void setData(Object newData) {
+			data = newData;
+		}
+		
+		public void setNext(Link newNext) {
+			next = newNext;
+		}
+		
+	}
 	
 	public class ListIterator {
 
