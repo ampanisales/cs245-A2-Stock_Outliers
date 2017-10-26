@@ -1,10 +1,11 @@
 /**
-* LinkedList is an implementation of
-* the Linked List data structure and
-* it is used by StockOutliers to contain
-* all of the StockData objects that created
-* from the CSV file, and to contain the
-* StockData objects that are outliers
+* Class Purpose: LinkedList is an 
+* implementation of the Linked List data 
+* structure and it is used by StockOutliers 
+* to contain all of the StockData objects 
+* that created from the CSV file, and to 
+* contain the StockData objects that are 
+* outliers
 *
 * @author Anthony Panisales
 */
