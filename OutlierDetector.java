@@ -8,7 +8,6 @@
 * @author Anthony Panisales
 */
 
-
 public class OutlierDetector {
 
 	int n; //Number of records in range
