@@ -1,6 +1,6 @@
 /**
 * OutlierDetector assists StockOutliers in
-* finding stock records that are Outliers,
+* finding stock records that are outliers,
 * and it uses the mean and standard
 * deviation method for finding outliers
 *
