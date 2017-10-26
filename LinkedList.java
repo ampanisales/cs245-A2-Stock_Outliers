@@ -10,7 +10,6 @@
 * @author Anthony Panisales
 */
 
-
 public class LinkedList {
 
 	Link head;
