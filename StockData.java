@@ -1,12 +1,11 @@
 /**
-* StockData is a class that has the fields
-* from the CSV file, and each record in the
-* file read in StockOutliers is made into
-* an instance of StockData
+* Class Purpose: StockData is a class that 
+* has the fields from the CSV file, and each 
+* record in the file read in StockOutliers is 
+* made into an instance of StockData
 *
 * @author Anthony Panisales
 */
-
 
 public class StockData {
 
