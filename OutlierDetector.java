@@ -1,3 +1,12 @@
+/**
+* OutlierDetector assists StockOutliers in
+* finding stock records that are Outliers,
+* and it uses the mean and standard
+* deviation method for finding outliers
+*
+* @author Anthony Panisales
+*/
+
 
 public class OutlierDetector {
 
