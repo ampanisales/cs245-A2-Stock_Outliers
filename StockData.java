@@ -10,7 +10,6 @@ public class StockData {
 	private String volume;
 	private boolean inRange;
 	
-	//Constructor
 	public StockData() {
 		inRange = false;
 	}
