@@ -1,3 +1,13 @@
+/**
+* StockOutliers takes in a file containing a list of 
+* stock records and finds the outliers in the file
+* within a certain date range
+*
+* @author Anthony Panisales
+*/
+
+
+
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
