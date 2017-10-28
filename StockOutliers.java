@@ -24,8 +24,7 @@ public class StockOutliers {
 
 		Scanner scan = new Scanner(System.in);
 		
-		boolean fileExists = false;
-		while (!fileExists) {
+		while (true) {
 			try {
 				System.out.print("Stock Symbol: ");
 				String symbol = scan.next();
