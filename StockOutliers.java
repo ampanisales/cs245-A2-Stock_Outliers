@@ -33,8 +33,9 @@ public class StockOutliers {
 				Scanner filescan = new Scanner(new File(filename));
 				System.out.print("Starting Date (Use year-month-day format): ");
 				String date = scan.next();
-				String format = "yyyy-MM-dd";
-				Date startDate = new SimpleDateFormat(format).parse(date);
+				SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+				sdformat.setLenient(false);
+				Date startDate = sdformat.parse(date);
 				Calendar endCal = Calendar.getInstance();
 				endCal.setTime(startDate);
 				endCal.add(Calendar.YEAR, 1);
@@ -55,7 +56,7 @@ public class StockOutliers {
 					} else {
 						data.setDate(tempDate);
 					}
-					Date recordDate = new SimpleDateFormat(format).parse(data.getDate());
+					Date recordDate = sdformat.parse(data.getDate());
 					data.setOpen(filescan.next());
 					data.setHigh(filescan.next());
 					data.setLow(filescan.next());
@@ -104,8 +105,8 @@ public class StockOutliers {
 					}
 					
 					//Prints linked list of outliers
-					System.out.println("Outliers from " + new SimpleDateFormat(format).format(startDate) + 
-										" to " + new SimpleDateFormat(format).format(endDate) + ":");
+					System.out.println("Outliers from " + sdformat.format(startDate) + 
+										" to " + sdformat.format(endDate) + ":");
 					if (outliers.size() == 0) {
 						System.out.println("No outliers found");
 					} else {
