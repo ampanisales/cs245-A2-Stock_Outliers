@@ -53,10 +53,18 @@ public class LinkedList {
 			link.setNext(head);
 		}
 		
+		/**
+		* Function Purpose: returns true if there is an Object 
+		* after the current location
+		*/
 		public boolean hasNext() {
 			return link.getNext() != null;
 		}
 		
+		/**
+		* Function Purpose: advances to the next Object instance
+		* and returns a copy of that Object
+		*/
 		public Object next() {
 			try {
 				link = link.getNext();
@@ -71,7 +79,9 @@ public class LinkedList {
 		size = 0;
 	}
 	
-	//Add to end of list
+	/**
+	* Function Purpose: adds data to the end of the LinkedList
+	*/
 	public void add(Object data) {
 		Link currLink = head;
 		if (currLink == null) {
@@ -84,7 +94,11 @@ public class LinkedList {
 		}
 		size++;
 	}
-	
+
+	/**
+	* Function Purpose: adds the data parameter to the position in
+	* the LinkedList, with the first position being 0
+	*/
 	public void add(int pos, Object data) throws Exception {
 		/* 1. Error check: Is the position valid?
 		2. Create a Link instance. Populate with argument Object
@@ -115,6 +129,9 @@ public class LinkedList {
 		}
 	}
 		
+	/**
+	* Function Purpose: removes the Object stored at position pos
+	*/
 	public void remove(int pos) throws Exception {
 		/*1. Error check: Is position valid?
 		2. Special cases? First or last element
@@ -142,7 +159,10 @@ public class LinkedList {
 			size--;
 		}
 	}
-		
+	
+	/**
+	* Function Purpose: returns the Object stored at position pos
+	*/
 	public Object get(int pos) throws Exception {
 		if (pos < 0 || pos > size) {
 			throw new Exception();
@@ -161,10 +181,17 @@ public class LinkedList {
 		}	
 	}
 	
+	/**
+	* Function Purpose: returns the size (number of Object instances)
+	* of the LinkedList 
+	*/
 	public int size() {
 		return size;
 	}
 	
+	/**
+	* Function Purpose: returns a ListIterator instance
+	*/
 	public ListIterator iterator() {
 		return new ListIterator();
 	}
