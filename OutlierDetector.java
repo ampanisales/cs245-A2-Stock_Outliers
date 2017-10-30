@@ -20,10 +20,16 @@ public class OutlierDetector {
 		mean = newMean;
 	}
 
+	/**
+	* Function Purpose: calculates the variance
+	*/
 	public double calculateVariance() { 
 		return sumCloseMinusMean/(n-1);
 	}
 	
+	/**
+	* Function Purpose: checks if a closing price is an outlier
+	*/
 	public boolean isOutlier(double adjClose) {
 		double variance = calculateVariance();
 		double stdev = Math.sqrt(variance);
