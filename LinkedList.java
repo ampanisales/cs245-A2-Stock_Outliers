@@ -132,7 +132,7 @@ public class LinkedList {
 	/**
 	* Function Purpose: removes the Object stored at position pos
 	*/
-	public void remove(int pos) throws Exception {
+	public Object remove(int pos) throws Exception {
 		/*1. Error check: Is position valid?
 		2. Special cases? First or last element
 		3. Loop to Link at pos-1
@@ -145,18 +145,22 @@ public class LinkedList {
 		if (pos < 0 || pos > size) {
 			throw new Exception();
 		} else {
+			Link removed;
 			if (pos == 0) {
+				removed = head;
 				head = head.getNext();
-			} else {
+			} else { 
 				Link currLink = head;
 				int counter = 0;
 				while (counter < pos-1) {
 					currLink = currLink.getNext();
 					counter++;
 				}
+				removed = currLink.getNext();
 				currLink.setNext(currLink.getNext().getNext());
 			}
 			size--;
+			return removed.getData();
 		}
 	}
 	
